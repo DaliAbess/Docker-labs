@@ -13,7 +13,7 @@ To complete this lab, follow these steps:
 
 1. **Create an image with VOLUME instruction**:
    Create a Dockerfile with the following content:
-   ```dockerfile
+```dockerfile
 FROM nginx:alpine
 LABEL maintainer="Collabnix"
 VOLUME /myvol
