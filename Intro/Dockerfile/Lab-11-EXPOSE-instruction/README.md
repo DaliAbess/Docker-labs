@@ -13,7 +13,7 @@ To work with the EXPOSE instruction, follow these steps:
 
 1. **Create an image with EXPOSE instruction**: 
     Create a Dockerfile with the following content:
-    ```dockerfile
+```dockerfile
 FROM nginx:alpine
 LABEL maintainer="Collabnix"
 EXPOSE 80/tcp
@@ -22,27 +22,27 @@ CMD [ "nginx","-g","daemon off;" ]
 ```
 2. **Build the Docker image**:
     Run the following command to build the Docker image:
-    ```bash
+```bash
 $ docker build -t expose:v1 .
 ```
 3. **Create a container based on the expose:v1 image**:
     Run the following command to create a container:
-    ```bash
+```bash
 $ docker container run --rm -d --name expose-inst expose:v1
 ```
 4. **Inspect the EXPOSE port in the image**:
     Use the following command to inspect the EXPOSE port:
-    ```bash
+```bash
 $ docker image inspect --format='{{range $p, $conf := .Config.ExposedPorts}}{{$p}} {{end}}' expose:v1
 ```
 5. **Publish all exposed ports**:
     You can publish all exposed ports using the `-P` flag:
-    ```bash
+```bash
 $ docker container run --rm -P -d --name expose-inst-Publish expose:v1
 ```
 6. **Check the published port**:
     List all containers to check the published port:
-    ```bash
+```bash
 $ docker container ls
 ```
 
