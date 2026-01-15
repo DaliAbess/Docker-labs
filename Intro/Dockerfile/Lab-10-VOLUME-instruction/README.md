@@ -20,56 +20,56 @@ VOLUME /myvol
 CMD [ "nginx","-g","daemon off;" ]
 ```
    Then, build the Docker image using the command:
-   ```bash
+```bash
 $ docker build -t volume:v1 .
 ```
 
 2. **Create a container based on the volume:v1 image**:
    Run the following command to create a container based on the volume:v1 image:
-   ```bash
+```bash
 $ docker container run --rm -d --name volume-test volume:v1
 ```
 
 3. **Find the volume created on the host**:
    * Check the volume name of the container:
-     ```bash
+```bash
 $ docker container inspect -f '{{ .Mounts }}' volume-test
 ```
      This will output the volume name, for example:
-     ```
+```
 [{volume  ed09456a448934218f03acbdaa31f465ebbb92e0d45e8284527a2c538cc6b016 /var/lib/docker/volumes/ed09456a448934218f03acbdaa31f465ebbb92e0d45e8284527a2c538cc6b016/_data /myvol local}]
-     ```
+```
    * List all volumes on the host:
-     ```bash
+```bash
 $ docker volume ls
 ```
      This will output a list of volumes, including the one created by the container:
-     ```
+```
 DRIVER    VOLUME NAME
 local     ed09456a448934218f03acbdaa31f465ebbb92e0d45e8284527a2c538cc6b016
-     ```
+```
    * Find the volume mount path on the host:
-     ```bash
+```bash
 $ docker container inspect -f '{{ .Mounts }}' volume-test
 ```
      This will output the mount path, for example:
-     ```
+```
 [{volume  ed09456a448934218f03acbdaa31f465ebbb92e0d45e8284527a2c538cc6b016 /var/lib/docker/volumes/ed09456a448934218f03acbdaa31f465ebbb92e0d45e8284527a2c538cc6b016/_data /myvol local}]
-     ```
+```
 
 4. **Test if the mount is working as expected**:
    * Create a file in the volume mount path on the host:
-     ```bash
+```bash
 $ touch /var/lib/docker/volumes/ed09456a448934218f03acbdaa31f465ebbb92e0d45e8284527a2c538cc6b016/_data/mytestfile.txt
 ```
    * Check if the file is present in the container:
-     ```bash
+```bash
 $ docker container exec -it volume-test ls /myvol
 ```
      This should output the file name:
-     ```
+```
 mytestfile.txt
-     ```
+```
 
 ## Expected Output
 After completing the above steps, you should see the following outputs:
