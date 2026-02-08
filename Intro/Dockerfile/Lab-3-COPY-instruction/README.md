@@ -13,31 +13,31 @@ To complete this lab, follow these steps:
 
 1. **Create an image with COPY instruction**
 	* Create a new file named `index.html` with the following content:
-	```bash
+```bash
 $ echo "Welcome to Dockerlabs !" > index.html
 ```
 	* Create a `Dockerfile` with the following content:
-	```dockerfile
+```dockerfile
 FROM nginx:alpine
 LABEL maintainer="Collabnix"
 COPY index.html /usr/share/nginx/html/
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 ```
 	* Build the Docker image:
-	```bash
+```bash
 $ docker image build -t cpy:v1 .
 ```
 	* Start a new container from the image:
-	```bash
+```bash
 $ docker container run -d --rm --name myapp1 -p 80:80 cpy:v1
 ```
 	* Check the index file:
-	```bash
+```bash
 $ curl localhost
 ```
 2. **COPY instruction in Multi-stage Builds**
 	* Create a new `Dockerfile` with the following content:
-	```dockerfile
+```dockerfile
 FROM alpine AS stage1
 LABEL maintainer="Collabnix"
 RUN echo "Welcome to Docker Labs!" > /opt/index.html
@@ -47,26 +47,26 @@ COPY --from=stage1 /opt/index.html /usr/share/nginx/html/
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 ```
 	* Build the Docker image:
-	```bash
+```bash
 $ docker image build -t cpy:v2 .
 ```
 	* Start a new container from the image:
-	```bash
+```bash
 $ docker container run -d --rm --name myapp2 -p 8080:80 cpy:v2
 ```
 	* Check the index file:
-	```bash
+```bash
 $ curl localhost:8080
 ```
 
 ## Expected Output
 After completing the above steps, you should see the following output:
 * For the single-stage build:
-	```bash
+```bash
 Welcome to Dockerlabs !
 ```
 * For the multi-stage build:
-	```bash
+```bash
 Welcome to Docker Labs !
 ```
 
