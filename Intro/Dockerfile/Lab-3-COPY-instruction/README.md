@@ -12,31 +12,31 @@ Before starting this lab, ensure you have:
 To complete this lab, follow these steps:
 
 1. **Create an image with COPY instruction**
-	* Create a new file named `index.html` with the following content:
+* Create a new file named `index.html` with the following content:
 ```bash
 $ echo "Welcome to Dockerlabs !" > index.html
 ```
-	* Create a `Dockerfile` with the following content:
+* Create a `Dockerfile` with the following content:
 ```dockerfile
 FROM nginx:alpine
 LABEL maintainer="Collabnix"
 COPY index.html /usr/share/nginx/html/
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 ```
-	* Build the Docker image:
+* Build the Docker image:
 ```bash
 $ docker image build -t cpy:v1 .
 ```
-	* Start a new container from the image:
+* Start a new container from the image:
 ```bash
 $ docker container run -d --rm --name myapp1 -p 80:80 cpy:v1
 ```
-	* Check the index file:
+* Check the index file:
 ```bash
 $ curl localhost
 ```
 2. **COPY instruction in Multi-stage Builds**
-	* Create a new `Dockerfile` with the following content:
+* Create a new `Dockerfile` with the following content:
 ```dockerfile
 FROM alpine AS stage1
 LABEL maintainer="Collabnix"
@@ -46,15 +46,15 @@ LABEL maintainer="Collabnix"
 COPY --from=stage1 /opt/index.html /usr/share/nginx/html/
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 ```
-	* Build the Docker image:
+* Build the Docker image:
 ```bash
 $ docker image build -t cpy:v2 .
 ```
-	* Start a new container from the image:
+* Start a new container from the image:
 ```bash
 $ docker container run -d --rm --name myapp2 -p 8080:80 cpy:v2
 ```
-	* Check the index file:
+* Check the index file:
 ```bash
 $ curl localhost:8080
 ```
