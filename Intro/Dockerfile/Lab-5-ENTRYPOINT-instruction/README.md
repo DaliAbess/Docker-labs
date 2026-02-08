@@ -86,8 +86,5 @@ Hello, Welcome to Docker Meetup!
 * To override the existing ENTRYPOINT, use the `--entrypoint` flag when running the container.
 * The `--entrypoint` flag allows you to specify a new ENTRYPOINT for the container.
 
-## Contributor
-This lab was contributed by Savio Mathew.
-
 ---
 
