@@ -12,18 +12,18 @@ Before starting this lab, make sure you have:
 To complete this lab, follow these steps:
 
 1. **Create a directory for the project**: 
-    ```bash
+```bash
 $ mkdir -p docker-compose/build
 $ cd docker-compose/build
 ```
 2. **Create a Dockerfile**:
-    ```dockerfile
+```dockerfile
 FROM nginx:alpine
 RUN echo "Welcome to Docker Workshop!" >/usr/share/nginx/html/index.html
 CMD ["nginx", "-g", "daemon off;"]
 ```
 3. **Create a docker-compose.yml file**:
-    ```yml
+```yml
 version: "3.7"
 services:
   webserver:
@@ -51,32 +51,32 @@ volumes:
   db_data:
 ```
 4. **Build container and network without starting the container**:
-    ```bash
+```bash
 $ docker-compose up --no-start
 ```
     This command will create the network and containers, but will not start them.
 5. **Check the status of the containers**:
-    ```bash
+```bash
 $ docker-compose ps
 ```
     This command will show the status of the containers.
 6. **Bring up the containers in detached mode**:
-    ```bash
+```bash
 $ docker-compose up -d
 ```
     This command will build the images and bring up the containers in detached mode.
 7. **Check the web server response**:
-    ```bash
+```bash
 $ curl http://localhost
 ```
     This command should return "Welcome to Docker Workshop!".
 8. **Check the db server response**:
-    ```bash
+```bash
 $ docker exec -it Mysqldb mysql -u root -p
 ```
     This command will open a MySQL shell where you can execute queries.
 9. **Rebuild the docker image and bring the stack up**:
-    ```bash
+```bash
 $ docker-compose up -d --build
 ```
     This command will rebuild the images and bring up the containers in detached mode.
