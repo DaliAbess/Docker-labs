@@ -41,9 +41,9 @@ services:
     ports:
     - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: Pa$$w0rd
+      MYSQL_ROOT_PASSWORD: Passw0rd
       MYSQL_USER: test
-      MYSQL_PASSWORD: Pa$$w0rd123
+      MYSQL_PASSWORD: Passw0rd123
       MYSQL_DATABASE: test
     volumes:
     - db_data:/var/lib/mysql
