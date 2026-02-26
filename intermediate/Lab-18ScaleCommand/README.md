@@ -9,24 +9,27 @@ Before starting this lab, make sure you have:
 * Clicked on "Add New Instance" on the left side of the screen to bring up an Alpine OS instance on the right side
 
 ## Step-by-Step Instructions
-Docker Compose Scaling Demo
+# Docker Compose Scaling Demo
+
 This project demonstrates how to use Docker Compose to scale services horizontally and load balance traffic across multiple container instances using Traefik.
-:rocket: Features
-Auto-Discovery: Traefik automatically detects new service instances.
-Load Balancing: Round-robin distribution of incoming requests.
-Scalability: Easily increase or decrease the number of application instances.
 
-:hammer_and_wrench: Prerequisites
-Docker installed.
-Docker Compose installed.
+## 🚀 Features
 
-:open_file_folder: Project Structure
-docker-compose.yml
-YAML
+- **Auto-Discovery:** Traefik automatically detects new service instances.
+- **Load Balancing:** Round-robin distribution of incoming requests.
+- **Scalability:** Easily increase or decrease the number of application instances.
 
+## 🔧 Prerequisites
 
+- Docker installed.
+- Docker Compose installed.
+
+## 📂 Project Structure
+
+### `docker-compose.yml`
+
+```yaml
 version: "3.8"
-
 services:
   # The Load Balancer (Traefik)
   proxy:
@@ -47,48 +50,61 @@ services:
     labels:
       - "traefik.http.routers.app.rule=PathPrefix(`/`)"
       - "traefik.http.services.app.loadbalancer.server.port=80"
+```
 
-:vertical_traffic_light: Getting Started
-1. Launch the Services
+## 🚦 Getting Started
+
+### 1. Launch the Services
+
 Start the project in detached mode:
-Bash
 
+```bash
 docker-compose up -d
-2. Scale the Application
-Scale the
-app service to 5 instances:
-Bash
+```
 
+### 2. Scale the Application
 
+Scale the `app` service to 5 instances:
+
+```bash
 docker-compose up -d --scale app=5
-3. Verify Instances
+```
+
+### 3. Verify Instances
+
 Check that all 5 containers are running:
-Bash
 
+```bash
 docker-compose ps
+```
 
-:test_tube: Testing the Load Balancer
-Option A: Command Line (Fastest)
-Run this loop to see the different
-Hostnames (Container IDs) responding to your requests:
-Bash
+## 🧪 Testing the Load Balancer
 
+### Option A: Command Line (Fastest)
 
+Run this loop to see the different Hostnames (Container IDs) responding to your requests:
+
+```bash
 for i in {1..10}; do curl -s http://localhost | grep "Hostname"; done
-Option B: Browser
-Open http://localhost.
-Refresh the page repeatedly.
-Observe the Hostname and IP fields changing; each refresh points to a different container instance.
-Option C: Dashboard
-Monitor your infrastructure at http://localhost:8080.
+```
 
-:broom: Cleanup
+### Option B: Browser
+
+1. Open [http://localhost](http://localhost).
+2. Refresh the page repeatedly.
+3. Observe the **Hostname** and **IP** fields changing — each refresh points to a different container instance.
+
+### Option C: Dashboard
+
+Monitor your infrastructure at [http://localhost:8080](http://localhost:8080).
+
+## 🧹 Cleanup
+
 To stop the services and remove the containers:
-Bash
 
-
+```bash
 docker-compose down
-
+```
 ## Key Concepts and Learning Objectives
 * The `docker-compose scale` command is used to set the number of containers to run for a service.
 * The `scale` command is deprecated and it is recommended to use the `up` command with the `--scale` flag instead.
