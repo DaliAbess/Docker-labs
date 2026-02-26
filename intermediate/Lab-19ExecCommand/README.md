@@ -11,12 +11,12 @@ Before starting this lab, you should:
 ## Step-by-Step Instructions
 To complete this lab, follow these steps:
 1. **Setup environment**: Create a new directory for your app and navigate into it.
-    ```bash
+```bash
 $ mkdir app
 $ cd app
 ```
 2. **Create a docker-compose.yml file**: Create a new file named `docker-compose.yml` with the following content:
-    ```yml
+```yml
 version: '3.1'
 services:
   # Webservers
@@ -37,7 +37,7 @@ services:
       - "80:4000"
 ```
 3. **Create a nginx.conf file**: Create a new file named `nginx.conf` with the following content:
-    ```nginx
+```nginx
 user  nginx;
 events {
     worker_connections  1024;
@@ -53,21 +53,21 @@ http {
 ```
     This file will configure our load balancer.
 4. **Create the compose containers**: Run the following command to create the containers:
-    ```bash
+```bash
 $ docker-compose up -d --scale webserver=3
 ```
 5. **View the containers**: Run the following command to view the containers:
-    ```bash
+```bash
 $ docker-compose ps
 ```
 6. **Execute commands in different webservers**: Run the following commands to execute commands in each webserver:
-    ```bash
+```bash
 $ docker-compose exec --index=1 webserver sh -c "echo 'Welcome to webserver1' > /usr/share/nginx/html/index.html"
 $ docker-compose exec --index=2 webserver sh -c "echo 'This is webserver2' > /usr/share/nginx/html/index.html"
 $ docker-compose exec --index=3 webserver sh -c "echo 'Webserver3 is up' > /usr/share/nginx/html/index.html"
 ```
 7. **Verify changes**: Run the following command to verify the changes:
-    ```bash
+```bash
 $ curl http://localhost
 ```
     Note: You may need to run this command multiple times to verify all changes.
