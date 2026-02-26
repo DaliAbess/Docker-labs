@@ -9,81 +9,85 @@ Before starting this lab, make sure you have:
 * Clicked on "Add New Instance" on the left side of the screen to bring up an Alpine OS instance on the right side
 
 ## Step-by-Step Instructions
-To complete this lab, follow these steps:
+Docker Compose Scaling Demo
+This project demonstrates how to use Docker Compose to scale services horizontally and load balance traffic across multiple container instances using Traefik.
+:rocket: Features
+Auto-Discovery: Traefik automatically detects new service instances.
+Load Balancing: Round-robin distribution of incoming requests.
+Scalability: Easily increase or decrease the number of application instances.
 
-1. **Create a docker-compose.yml file**: Create a new file named `docker-compose.yml` with the following content:
-```yml
-version: '3.1'
+:hammer_and_wrench: Prerequisites
+Docker installed.
+Docker Compose installed.
+
+:open_file_folder: Project Structure
+docker-compose.yml
+YAML
+
+
+version: "3.8"
+
 services:
-  redis-master:
-    image: redis:latest
-    container_name: webserver
-    restart: unless-stopped
+  # The Load Balancer (Traefik)
+  proxy:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
     ports:
-    - "6379"
-  redis-slave:
-    image: gcr.io/google_samples/gb-redisslave:v1
-    ports:
-    - "6379"
-    environment:
-    - GET_HOSTS_FROM=dns
-  frontend:
-    image: gcr.io/google-samples/gb-frontend:v3
-    ports:
-    - "80:80"
-    environment:
-    - GET_HOSTS_FROM=dns
-```
-2. **Bringing up the containers**: Run the following command to bring up the containers in detached mode:
-```bash
-$ docker-compose up -d
-```
-3. **Checking container status**: Run the following command to check the status of the containers:
-```bash
-$ docker-compose ps
-```
-This will output the following:
-```
-Name                  Command               State                    Ports
--------------------------------------------------------------------------------------
-root_frontend_1   apache2-foreground   Up       0.0.0.0:80->80/tcp
-root_redis-slave_1   /entrypoint.sh /bin/sh -c ...   Up       0.0.0.0:32769->6379/tcp
-webserver           docker-entrypoint.sh redis ...   Up       0.0.0.0:32768->6379/tcp
-```
-4. **List out the services**: Run the following command to list out the services:
-```bash
-$ docker-compose ps --services
-```
-This will output the following:
-```
-redis-slave
-frontend
-redis-master
-```
-5. **Scale service**: Run the following command to scale the `redis-slave` service to 3 instances:
-```bash
-$ docker-compose scale redis-slave=3
-```
-This will output the following:
-```
-Starting root_redis-slave_1 ... done
-Creating root_redis-slave_2 ... done
-Creating root_redis-slave_3 ... done
-```
-6. **Checking container status again**: Run the following command to check the status of the containers again:
-```bash
-$ docker-compose ps
-```
-This will output the following:
-```
-Name                  Command               State                    Ports
--------------------------------------------------------------------------------------
-root_frontend_1   apache2-foreground   Up       0.0.0.0:80->80/tcp
-root_redis-slave_1   /entrypoint.sh /bin/sh -c ...   Up       0.0.0.0:32772->6379/tcp
-root_redis-slave_2   /entrypoint.sh /bin/sh -c ...   Up       0.0.0.0:32775->6379/tcp
-root_redis-slave_3   /entrypoint.sh /bin/sh -c ...   Up       0.0.0.0:32776->6379/tcp
-webserver           docker-entrypoint.sh redis ...   Up       0.0.0.0:32768->6379/tcp
-```
+      - "80:80"      # Web Traffic
+      - "8080:8080"  # Traefik Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # The App Service to scale (whoami)
+  app:
+    image: traefik/whoami
+    labels:
+      - "traefik.http.routers.app.rule=PathPrefix(`/`)"
+      - "traefik.http.services.app.loadbalancer.server.port=80"
+
+:vertical_traffic_light: Getting Started
+1. Launch the Services
+Start the project in detached mode:
+Bash
+
+docker-compose up -d
+2. Scale the Application
+Scale the
+app service to 5 instances:
+Bash
+
+
+docker-compose up -d --scale app=5
+3. Verify Instances
+Check that all 5 containers are running:
+Bash
+
+docker-compose ps
+
+:test_tube: Testing the Load Balancer
+Option A: Command Line (Fastest)
+Run this loop to see the different
+Hostnames (Container IDs) responding to your requests:
+Bash
+
+
+for i in {1..10}; do curl -s http://localhost | grep "Hostname"; done
+Option B: Browser
+Open http://localhost.
+Refresh the page repeatedly.
+Observe the Hostname and IP fields changing; each refresh points to a different container instance.
+Option C: Dashboard
+Monitor your infrastructure at http://localhost:8080.
+
+:broom: Cleanup
+To stop the services and remove the containers:
+Bash
+
+
+docker-compose down
 
 ## Key Concepts and Learning Objectives
 * The `docker-compose scale` command is used to set the number of containers to run for a service.
