@@ -12,12 +12,12 @@ Before starting this lab, make sure you have:
 To complete this lab, follow these steps:
 
 1. **Initial Setup**: Create a new directory and navigate into it.
-   ```bash
+```bash
 $ mkdir app
 $ cd app
 ```
 2. **Create a docker-compose.yml file**: Create a `docker-compose.yml` file with the following content:
-   ```yml
+```yml
 version: '3.1'
 services:
   webserver:
@@ -34,19 +34,19 @@ services:
       - "80:4000"
 ```
 3. **Create the compose containers**: Start the containers in detached mode and scale the `webserver` service to 3 instances.
-   ```bash
+```bash
 $ docker-compose up -d --scale webserver=3
 ```
 4. **View the containers**: Check the status of the containers.
-   ```bash
+```bash
 $ docker-compose ps
 ```
 5. **Kill all the containers**: Stop all the containers using the `kill` command.
-   ```bash
+```bash
 $ docker-compose kill
 ```
 6. **Check if there are any running containers**: Verify if there are any running containers after the `kill` command.
-   ```bash
+```bash
 $ docker-compose ps
 ```
 
